@@ -1,7 +1,12 @@
 import 'dart:io';
 
-import 'package:farmers/src/styles/textfields.dart';
+import 'package:farmers/src/styles/base.dart';
+import 'package:farmers/src/styles/text.dart';
+import 'package:farmers/src/widgets/button.dart';
+import 'package:farmers/src/widgets/social_button.dart';
+import 'package:farmers/src/widgets/textfield.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
@@ -39,31 +44,62 @@ class Login extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: TextFieldStyles.textBoxHorizontal(),
-            vertical: TextFieldStyles.textBoxVertical(),
-          ),
-          child: email(),
+        AppTextField(
+          isIOS: Platform.isIOS,
+          hintText: "Email",
+          cupertinoIcon: CupertinoIcons.mail_solid,
+          materialIcon: Icons.email,
+          textInputType: TextInputType.emailAddress,
         ),
-        password(),
+        AppTextField(
+          isIOS: Platform.isIOS,
+          hintText: 'Password',
+          cupertinoIcon: IconData(
+            0xf4c9,
+            fontFamily: CupertinoIcons.iconFont,
+            fontPackage: CupertinoIcons.iconFontPackage,
+          ),
+          materialIcon: Icons.lock,
+          obscureText: true,
+        ),
+        AppButton(
+          buttonText: 'Login',
+          buttonType: ButtonType.LightBlue,
+        ),
+        SizedBox(height: 6.0),
+        Center(child: Text('Or', style: TextStyles.suggestion)),
+        SizedBox(height: 6.0),
+        Padding(
+          padding: BaseStyles.listPadding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AppSocialButton(socialType: SocialType.Facebook),
+              SizedBox(width: 15.0),
+              AppSocialButton(socialType: SocialType.Google)
+            ],
+          ),
+        ),
+        Padding(
+          padding: BaseStyles.listPadding,
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: 'New Here? ',
+              style: TextStyles.body,
+              children: [
+                TextSpan(
+                  text: 'Signup',
+                  style: TextStyles.link,
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () =>
+                        Navigator.pushReplacementNamed(context, '/signup'),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
-  }
-
-  Widget email() {
-    if (Platform.isIOS) {
-      return CupertinoTextField();
-    } else {
-      return TextField();
-    }
-  }
-
-  Widget password() {
-    if (Platform.isIOS) {
-      return CupertinoTextField();
-    } else {
-      return TextField();
-    }
   }
 }
